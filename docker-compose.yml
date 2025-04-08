@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  servant-nacos-db:
+    build:
+      context: ${module}
+      dockerfile: ./Dockerfile
+    image: servant-nacos-db:8.0
+    ports:
+      - '3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nacos
+      MYSQL_USER: nacos
+      MYSQL_PASSWORD: nacos
+    volumes:
+      - ${module}/docker.cnf:/etc/mysql/conf.d/docker.cnf
+      - ${volume}/mysql:/var/lib/mysql
+    labels:
+      saber.module.name: servant-nacos-db
+      saber.module.version: '8.0'
+      saber.module.description: 基础模块，Nacos配置中心数据库
+      saber.running.type: auto
+      saber.running.max_instance: 1
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    logging:
+      driver: json-file
+      options:
+        max-file: '3'
+        max-size: 10m
+    restart: always
