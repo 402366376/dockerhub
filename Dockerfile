@@ -1,1 +1,1 @@
-FROM mysql:8.4.6-oraclelinux9
+FROM mysql:8.4.7-oraclelinux9
